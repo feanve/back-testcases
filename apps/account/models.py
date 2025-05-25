@@ -4,6 +4,7 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(verbose_name="Correo electrónico", unique=True)
     is_active = models.BooleanField(default=True, verbose_name="Activo")
+    rol = models.CharField(max_length=10, choices=[('admin', 'Admin'), ('user', 'User')], default='admin', verbose_name="Rol")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Fecha de actualización")
 
