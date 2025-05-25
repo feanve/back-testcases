@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, RegisterSerializer, UpdateUserSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -39,3 +40,14 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
+
+    def validate(self, attrs):
+        # Reemplaza 'username' por 'email' en los atributos
+        attrs['username'] = attrs.get('email', None)
+        return super().validate(attrs)
+
+class EmailTokenObtainPairView(TokenObtainPairView):
+    serializer_class = EmailTokenObtainPairSerializer
